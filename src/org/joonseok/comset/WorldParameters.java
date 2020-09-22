@@ -52,6 +52,8 @@ public class WorldParameters implements Serializable {
 
 	// HOME ZONE MODEL
 	public static final int NUM_OF_GROUPS = 4;
+	public static final boolean HOME_ZONE_ENABLED = false;
+	public static final double WEIGHT_FOR_ANGLE = 1;
 
 	// LOGGING
 	public static final String LOG_FILE_PATH = "data.csv";
@@ -116,6 +118,11 @@ public class WorldParameters implements Serializable {
 	public int numOfFeatures;
 	@ParameterGroup(group = "mf", description = "Whether building a matrix", lower = "", upper = "")
 	public boolean buildMatrix;
+	@ParameterGroup(group = "mf", description = "Home zone based on a matrix", lower = "", upper = "")
+	public boolean homeZoneEnabled;
+	@ParameterGroup(group = "mf", description = "Weight for angle", lower = "", upper = "")
+	public double weightForAngle;
+
 
 	@ParameterGroup(group = "", description = "Log file", lower = "", upper = "")
 	public String logFilePath;
@@ -176,6 +183,8 @@ public class WorldParameters implements Serializable {
 		numOfGroups = NUM_OF_GROUPS;
 		numOfFeatures = NUM_OF_FEATURES;
 		buildMatrix = BUILD_MATRIX;
+		homeZoneEnabled = HOME_ZONE_ENABLED;
+		weightForAngle = WEIGHT_FOR_ANGLE;
 
 		logFilePath = LOG_FILE_PATH;
 		propertyFile = DEFAULT_PROPERTY_FILE_NAME;

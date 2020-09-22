@@ -1,6 +1,6 @@
-# Distance-Aware Competitive Spatiotemporal Searching Using Spatiotemporal Resource Matrix Factorization
+# Vehicle Relocation for Ride-Hailing
 
-This project is based on the [COMSET](https://github.com/Chessnl/COMSET-GISCUP) simulator described in the [2019 GISCUP Problem Definition](https://sigspatial2019.sigspatial.org/giscup2019/problem).
+This project is based on the [SmartAgent](https://github.com/joonseok-kim/SmartAgent) simulator.
 
 ## Brief description
 
@@ -20,7 +20,7 @@ Main features of our approach are summarized as follows:
 
 ## Structure of project
 
-Besides original COMSET, we added source code and resources as follows:
+We leverage the [COMSET](https://github.com/Chessnl/COMSET-GISCUP) simulator to build our competitive search models as follows:
 - src/org/joonseok/comset/
 - model/
 
@@ -31,7 +31,7 @@ Since COMSET is a maven project, use maven to compile the project with the follo
 ```
 mvn org.apache.maven.plugins:maven-compiler-plugin:3.1:compile org.apache.maven.plugins:maven-assembly-plugin:3.1.0:single
 ```
-It will generate `COMSET-1.0-jar-with-dependencies.jar` in directory `target`. It will include all dependencies. Note that a created jar file does not include any resources such as maps, datasets, and models. Therefore, when you run simulation, make sure that all resources are on the same path.
+It will generate `CSTS-1.0-jar-with-dependencies.jar` in directory `target`. It will include all dependencies. Note that a created jar file does not include any resources such as maps, datasets, and models. Therefore, when you run simulation, make sure that all resources are on the same path.
 
 
 ## How to run simulation
@@ -43,11 +43,11 @@ comset.agent_class = org.joonseok.comset.SmartAgent
 ```
 2. Make sure that two files `H6.txt` and `W6.txt` in directory `model` exist.
 
-If the prerequisite is satisfied, simply run `COMSET-1.0-jar-with-dependencies.jar` with java command as follows:
+If the prerequisite is satisfied, simply run `CSTS-1.0-jar-with-dependencies.jar` with java command as follows:
 ```
-java -jar COMSET-1.0-jar-with-dependencies.jar
+java -jar CSTS-1.0-jar-with-dependencies.jar
 ```
-For your convenience, executable files, i.e., `run.bat` and `run.sh`, are available. We assume that the jar file, `COMSET-1.0-jar-with-dependencies.jar`, exists in directory `target`.
+For your convenience, executable files, i.e., `run.bat` and `run.sh`, are available. We assume that the jar file, `CSTS-1.0-jar-with-dependencies.jar`, exists in directory `target`.
 
 
 ## How to build a model
@@ -82,21 +82,21 @@ mf.learningData = NewYorkTLC/yellow_tripdata_2016-02.csv
 Examples:
 
 ```
-java -cp COMSET-1.0-jar-with-dependencies.jar org.joonseok.comset.ModelBuilder -c generate_matrix -config etc/config.properties
-java -cp COMSET-1.0-jar-with-dependencies.jar org.joonseok.comset.ModelBuilder -c factorization -config etc/config.properties
-java -cp COMSET-1.0-jar-with-dependencies.jar org.joonseok.comset.ModelBuilder -c factorization -config etc/config.properties -python C:/Python37/python
+java -cp CSTS-1.0-jar-with-dependencies.jar org.joonseok.comset.ModelBuilder -c generate_matrix -config etc/config.properties
+java -cp CSTS-1.0-jar-with-dependencies.jar org.joonseok.comset.ModelBuilder -c factorization -config etc/config.properties
+java -cp CSTS-1.0-jar-with-dependencies.jar org.joonseok.comset.ModelBuilder -c factorization -config etc/config.properties -python C:/Python37/python
 ```
 
-For your convenience, executable files, i.e., `traning.bat` and `traning.sh`, are available, which runs `generate_matrix` followed by `factorization`. If Python path is not set in your environment (i.e., you cannot run `python` in the command-line interface), you should set Python path manually using argument `-python` (see the above example). We assume that the jar file, `COMSET-1.0-jar-with-dependencies.jar`, exists in directory `target`.
+For your convenience, executable files, i.e., `traning.bat` and `traning.sh`, are available, which runs `generate_matrix` followed by `factorization`. If Python path is not set in your environment (i.e., you cannot run `python` in the command-line interface), you should set Python path manually using argument `-python` (see the above example). We assume that the jar file, `CSTS-1.0-jar-with-dependencies.jar`, exists in directory `target`.
 
 By default, the program will generate 10 pairs of non-negative matrices that varies the number of components in directory `model`. If you want to change the setting, you may modify `model/NMF.py`.
 
 
 ## Resources
 
-Joon-Seok Kim, Dieter Pfoser, and Andreas Züfle, <i>Distance-Aware Competitive Spatiotemporal Searching Using Spatiotemporal Resource Matrix Factorization (GIS Cup)</i>, In the 27th ACM SIGSPATIAL International Conference on Advances in Geographic Information Systems (SIGSPATIAL'19), November 5–8, 2019, Chicago, IL, USA. https://doi.org/10.1145/3347146.3363350
+Joon-Seok Kim, Dieter Pfoser, and Andreas Züfle, <i>Vehicle Relocation for Ride-Hailing</i>, In Proceedings of the 7th IEEE International Conference on Data Science and Advanced Analytics (DSAA2020), October 2020
 
-Project Website: [http://giscup19.joonseok.org/](http://giscup19.joonseok.org/)
+Project Website: [https://sites.google.com/view/dsaa-2020](https://sites.google.com/view/dsaa-2020)
 
 
 ## Authors

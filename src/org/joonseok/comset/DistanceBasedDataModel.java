@@ -15,8 +15,13 @@ import COMSETsystem.Road;
  *
  */
 public abstract class DistanceBasedDataModel extends AbstractDataModel {
+	protected boolean homeZoneEnabled;
+	protected double weightForAngle;
 	protected DistanceBasedDataModel(CityMap map) {
 		super(map);
+		WorldParameters params = WorldParameters.getInstance();
+		homeZoneEnabled = params.homeZoneEnabled;
+		weightForAngle = params.weightForAngle;
 	}
 
 	protected Road getTargetRoad(LocationOnRoad currentLocation, long currentTime, Random rnd) {
@@ -50,7 +55,10 @@ public abstract class DistanceBasedDataModel extends AbstractDataModel {
 			roads = selectedZone.getRoads();
 			Road road = roads.get(0);
 			long distance = map.travelTimeBetween(currentLocation.road.to, road.from);
-			probs[i] = (distance <= 0) ? 1 : Math.pow((double)distance, params.exponent);
+			probs[i] = (distance <= 0) ? 1 : Math.pow((double) distance, params.exponent);
+			if (homeZoneEnabled) {
+				probs[i] *= (1-towardsHome(currentLocation, road, rnd));
+			}
 			sum += probs[i];
 		}
 		
@@ -89,5 +97,33 @@ public abstract class DistanceBasedDataModel extends AbstractDataModel {
 		roads = selectedZone.getRoads();
 		int rndRoad = rnd.nextInt(roads.size());
 		return roads.get(rndRoad);
+	}
+
+	protected double towardsHome(LocationOnRoad currentLocation, Road targetRoad, Random rnd) {
+		int belongingGroupNumber = rnd.hashCode() % zones.size();
+		List<Road> zone = zones.get(belongingGroupNumber).getRoads();
+		Road home = zone.get(0);
+
+		double lat1 = targetRoad.from.latitude;
+		double lon1 = targetRoad.from.longitude;
+
+		double lat2 = (home.from.latitude + home.to.latitude) / 2;
+		double lon2 = (home.from.longitude + home.to.longitude) / 2;
+
+		double[] l = currentLocation.toLatLon();
+
+		double x1 = lon1 - l[1];
+		double y1 = lat1 - l[0];
+
+		double x2 = lon2 - l[1];
+		double y2 = lat2 - l[0];
+
+		double a1 = Math.atan2(y1, x1);
+		double a2 = Math.atan2(y2, x2);
+
+		double r = Math.abs(a2 - a1);
+		r = r > Math.PI ? 2 * Math.PI - r : r;
+		r *= weightForAngle;
+		return r / Math.PI;
 	}
 }
